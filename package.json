@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "postbuild": "node scripts/copy-standalone-files.js",
-    "start": "node server.js",
+    "start": "node .next/standalone/server.js",
     "lint": "eslint"
   },
   "dependencies": {

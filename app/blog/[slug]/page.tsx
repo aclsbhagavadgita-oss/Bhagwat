@@ -1,16 +1,12 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getBlogBySlug, getAllBlogs } from '@/lib/blogs';
+import { getBlogBySlug } from '@/lib/blogs';
 import { BASE_URL } from '@/lib/seo';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import JsonLd, { getBreadcrumbSchema } from '@/components/ui/JsonLd';
 
-export async function generateStaticParams() {
-  const blogs = getAllBlogs();
-  return blogs.map((blog) => ({
-    slug: blog.slug,
-  }));
-}
+// Force server-render so admin changes appear instantly without rebuild
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const blog = getBlogBySlug(params.slug);

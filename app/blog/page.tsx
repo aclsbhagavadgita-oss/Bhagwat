@@ -5,6 +5,9 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import { getPublishedBlogs } from '@/lib/blogs';
 import JsonLd, { getBreadcrumbSchema } from '@/components/ui/JsonLd';
 
+// Always render fresh — so admin changes show instantly without rebuild
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Blog — Evidence-Based Resuscitation & Wisdom | Gita Wisdom',
   description: 'Explore articles combining ACLS protocols, emergency medicine, and spiritual wisdom from the Bhagavad Gita.',

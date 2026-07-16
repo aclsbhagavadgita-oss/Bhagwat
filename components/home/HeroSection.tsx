@@ -58,7 +58,7 @@ export default function HeroSection() {
             animationDelay: '0.1s',
           }}
         >
-          Advanced Cardiovascular Life Support Through the Lens of the Bhagavad Gita
+          Resuscitation & Wisdom of Gita
         </h1>
 
         {/* Sanskrit subtitle */}

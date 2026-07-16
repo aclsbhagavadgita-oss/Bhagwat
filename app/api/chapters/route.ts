@@ -21,12 +21,28 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const newChapter = await request.json() as Chapter;
-    if (!newChapter.number || !newChapter.transliteratedTitle) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+
+    // Fixed: number can be 0 so check for undefined/null specifically
+    if (newChapter.number === undefined || newChapter.number === null || !newChapter.transliteratedTitle?.trim()) {
+      return NextResponse.json(
+        { error: 'Missing required fields: chapter number and title are required' },
+        { status: 400 }
+      );
     }
 
-    const data = fs.readFileSync(DATA_FILE, 'utf8');
-    const chapters = JSON.parse(data) as Chapter[];
+    let chapters: Chapter[] = [];
+    try {
+      const data = fs.readFileSync(DATA_FILE, 'utf8');
+      chapters = JSON.parse(data) as Chapter[];
+    } catch {
+      // File doesn't exist yet on server — start fresh
+      console.log('chapters.json not found, creating at:', DATA_FILE);
+      chapters = [];
+    }
+
+    // Ensure directory exists before writing (important for standalone deployments)
+    const dir = path.dirname(DATA_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     
     const index = chapters.findIndex(ch => ch.number === newChapter.number);
     if (index >= 0) {
@@ -43,7 +59,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, chapter: newChapter });
   } catch (error) {
     console.error("Failed to save chapter:", error);
-    return NextResponse.json({ error: 'Failed to save chapter' }, { status: 500 });
+    return NextResponse.json(
+      { error: `Failed to save chapter: ${error instanceof Error ? error.message : String(error)}` },
+      { status: 500 }
+    );
   }
 }
 

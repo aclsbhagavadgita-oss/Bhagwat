@@ -6,6 +6,9 @@ import JsonLd, { getWebSiteSchema, getHomePageFaqSchema, getBreadcrumbSchema } f
 import { getHomeMetadata } from '@/lib/seo';
 import { BASE_URL } from '@/lib/seo';
 
+// Force server-render so admin changes to chapters appear instantly
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = getHomeMetadata();
 
 export default function HomePage() {

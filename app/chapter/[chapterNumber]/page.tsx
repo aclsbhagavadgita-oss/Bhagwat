@@ -6,13 +6,11 @@ import { getChapterMetadata, BASE_URL } from '@/lib/seo';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import JsonLd, { getBreadcrumbSchema } from '@/components/ui/JsonLd';
 
+// Force server-render so admin changes to chapters appear instantly
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ chapterNumber: string }>;
-}
-
-export async function generateStaticParams() {
-  const chapters = getPublishedChapters();
-  return chapters.map(ch => ({ chapterNumber: String(ch.number) }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
